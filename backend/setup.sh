@@ -1,2 +1,2 @@
 sudo apt-get install python-virtualenv
-virtualenv venv
+sudo pip install requests Flask
