@@ -9,4 +9,9 @@ body {
 
 #target, #current {
 	margin: 20px;
+	width: calc(100% - 40px);
+}
+
+select {
+	width: 40%;
 }
