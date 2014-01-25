@@ -1,0 +1,12 @@
+body {
+	text-align: center;
+	font-size: 50pt;
+}
+
+#title {
+	margin: 10px;
+}
+
+#target, #current {
+	margin: 20px;
+}
