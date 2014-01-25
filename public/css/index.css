@@ -1,10 +1,10 @@
 body {
 	text-align: center;
-	font-size: 50pt;
 }
 
 #title {
 	margin: 10px;
+	font-size: 50pt;
 }
 
 #target, #current {
