@@ -2,6 +2,7 @@ from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request
 from linkedIn.items import linkedInItem
+from HTMLParser import HTMLParser
 
 import sys
 import random
@@ -10,6 +11,20 @@ randomSampling = True
 samplingProbability = 0.1
 
 filterForUS = True
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
 
 def striplist(l):
         return ([x.strip().replace('\t',"") for x in l])				
@@ -62,7 +77,7 @@ class linkedInSpider(BaseSpider):
 			# ------------------------------------------------------------------------------------------------------------------
 	
 			# Education: School Names
-			firstEducationSchool	= striplist(hxs.select('//div[@class="position  first education vevent vcard"]/h3[@class="summary fn org"]').extract())
+			firstEducationSchool	= [find_between(response.body, '<h3 class="summary fn org">', '</h3>').strip().split('|')[0].strip()]
 			schoolNames				= striplist(hxs.select('//div[@class="position  education vevent vcard"]/h3[@class="summary fn org"]').extract())
 			
 			# Education: Degrees
@@ -83,7 +98,7 @@ class linkedInSpider(BaseSpider):
 	
 	
 			if firstEducationSchool:
-				item['educationSchoolName1']		= firstEducationSchool.pop(0)
+				item['educationSchoolName1']		= strip_tags(firstEducationSchool.pop(0)).strip()
 				if firstDegree:
 					item['educationDegree1']		= firstDegree.pop(0)
 				else:
@@ -101,7 +116,7 @@ class linkedInSpider(BaseSpider):
 				else:
 					item['eduTimeEnd1']				= []
 			elif schoolNames:
-				item['educationSchoolName1']		= schoolNames.pop(0)
+				item['educationSchoolName1']		= strip_tags(schoolNames.pop(0))
 				if schoolDegrees:
 					item['educationDegree1']		= schoolDegrees.pop(0)
 				else:
@@ -129,11 +144,11 @@ class linkedInSpider(BaseSpider):
 			if not schoolNames:
 				item['educationSchoolName2']		= []
 			else:
-				item['educationSchoolName2']		= schoolNames.pop(0)
+				item['educationSchoolName2']		= strip_tags(schoolNames.pop(0)).strip()
 			if not schoolNames:
 				item['educationSchoolName3']		= []
 			else:
-				item['educationSchoolName3']		= schoolNames.pop(0)
+				item['educationSchoolName3']		= strip_tags(schoolNames.pop(0)).strip()
 	
 	
 	
