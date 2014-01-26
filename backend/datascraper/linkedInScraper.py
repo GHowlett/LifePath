@@ -48,8 +48,11 @@ def strWoSpaces(str):
 
 
 def scrapeLinkedInProfile(uri, idUri):
-    r = br.open(uri)
-    html = r.read()
+    try:
+        r = br.open(uri)
+        html = r.read()
+    except:
+        return []
 
     soup = BeautifulSoup(html)
 
@@ -113,6 +116,7 @@ def scrapeLinkedInProfile(uri, idUri):
             print strWoSpaces(unis[ctr].get_text())
             print strWoSpaces(degrees[ctr].get_text())
             print strWoSpaces(majors[ctr].get_text())
+            print "---"
             """
 
             rec = {}
@@ -161,7 +165,7 @@ def getLinkedInProfiles(input_filename, output_filename, debug=False):
             #print jsonRec
 
             # delay
-            sleepSecs = randint(3,9)
+            sleepSecs = randint(1,2)
             if debug == True:
                 sys.stderr.write("Delaying ... %s\n" % str(sleepSecs))
             sleep(sleepSecs)
