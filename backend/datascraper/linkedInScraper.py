@@ -1,3 +1,7 @@
+# startup weekend euro, 1/26/2014, seattle, wa
+# life path
+# designed by cj sperber
+
 import sys
 import re
 import json
