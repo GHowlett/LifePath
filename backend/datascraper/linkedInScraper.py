@@ -87,8 +87,8 @@ def scrapeLinkedInProfile(uri, idUri):
 
             rec["userid"] = idUri
             rec["type"] = "j"
-            rec["name"] = strWoSpaces(experiences[ctr].find("span", "title").get_text())
-            rec["title"] = strWoSpaces(experiences[ctr].find("span", "summary").get_text())
+            rec["name"] = strWoSpaces(experiences[ctr].find("span", "summary").get_text())
+            rec["title"] = strWoSpaces(experiences[ctr].find("span", "title").get_text())
             rec["industry"] = strWoSpaces(orgs[ctr].get_text())
             rec["desc"] = strWoSpaces(descs[ctr+1].get_text())
             rec["start"]  = strWoSpaces(sdates[ctr].get("title"))
