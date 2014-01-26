@@ -30,64 +30,23 @@ body {
 	width: calc(100% - 40px);
 }
 
-.step {
-	display: block;
-	padding: 3px;
-	margin: 0.3em auto;
-	width: calc(80% - 28px);
-
-	border-radius: 0.4em;
-	box-shadow: 0px 0px 5px 1px #555;
-
-	text-align: center;
-	vertical-align: middle;
-}
-
-.choice {
-	position: relative;
-	display: inline-block;
-	margin: 0 1em;
-	padding: 1em 1.5em;
-	width: 10em;
-
-	border-radius: 8px;
-	background: #BA6D03;
-	color: #fff;
-	text-shadow: -1px -1px 0.5px rgba(0,0,0,0.5);
-	background-image: -webkit-linear-gradient(top, rgba(97,184,219,0), rgba(91, 53, 1, 1));
-	box-shadow: inset 0px 0px 0px 1px #6A4E29, inset 0px 2px 1px 0px rgba(255,255,255,0.75);
-	/* TODO: do the rest of the browser prefixes */
-
-	overflow: hidden;
-
-	transition: background-color .2s ease-in-out;
-
-	font-size: 1em;
-	font-weight: 700;
-	letter-spacing: -0.025em;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.choice:hover {
-	background-color: #D78718;
-}
-
-.choice:before {
-	content: '';
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background: url('../img/bg.png');
-}
-
 select {
 	width: 40%;
 }
 
 #go-button {
 	width: calc(80% - 28px);
+}
+
+#career-path {
+	width: calc(80% - 28px);
+	height: 24em;
+}
+
+.link {
+	stroke: #999;
+}
+
+.node {
+	font-size: 0.7em;
 }

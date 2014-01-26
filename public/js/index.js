@@ -1,49 +1,73 @@
 var choices = [];
 
-// renders the new choices avalaible after 
-// a new or revised decision is made
-function onChoiceMade() {
-	$(this).addClass('chosen');
-	$(this).siblings().removeClass('chosen');
+// renders the results in using d3
+function render(graph) {
+	var width = $('#career-path').width();
+	var height = $('#career-path').height();
 
-	// TODO: render handle childless choices
+	var force = d3.layout.force()
+		.charge(-350)
+		.gravity(0)
+		.friction(0.7)
+		.linkDistance(80)
+		.size([width,height])
 
-	var nextSteps = $(this).parent().nextAll().remove();
-	choices.splice(choices.length - nextSteps.length);
+	var svg = d3.select('#career-path').append('svg')
+		.attr('width',width)
+		.attr('height',height)
 
-	var thisIndex = $(this).prevAll().length;
-	var thisChoice = choices[choices.length -1].children[thisIndex];
-	choices.push(thisChoice);
+	force
+		.nodes(graph.nodes)
+		.links(graph.links)
+		.start()
 
-	renderNextStep(thisChoice.children);
-}
+	var link = svg.selectAll(".link")
+      .data(graph.links)
+    .enter().append("line")
+      .attr("class", "link")
+      .style("stroke-width", "2px")
+      //.style("stroke", "#222")
 
-// returns an unattached row of all the next choices
-function renderNextStep(children) {
-	var step = $('<div class="step">');
+    var node = svg.selectAll(".node")
+      .data(graph.nodes)
+    .enter().append('g')
+    	.attr('class','node')
+    	.call(force.drag)
 
-	// TODO: render arrow pointing to target if no children
+    node.append("circle")
+      .attr("r", 30)
+      .style("fill", "gray")
 
-	children.forEach(function(choice){
-		var $choice = $('<div class="choice">)');
-		$choice.html(choice.industry +' '+ choice.title);
-		$choice.click(onChoiceMade);
-		step.append($choice);
+    node.append("text")
+    	.attr('dy', '.3em')
+    	.style('text-anchor', 'middle')
+      .text(function(d) { console.log(d); return d.title; });
+
+    force.on("tick", function() {
+	    link.attr("x1", function(d) { return d.source.x; })
+	        .attr("y1", function(d) { return d.source.y; })
+	        .attr("x2", function(d) { return d.target.x; })
+	        .attr("y2", function(d) { return d.target.y; });
+
+	    node.attr('transform', function(d){ 
+    		return "translate(" + d.x + "," + d.y + ")"; });
+
+	    // node.attr("cx", function(d) { return d.x; })
+	    //     .attr("cy", function(d) { return d.y; });
 	});
 
-	$('#career-path').append(step);
 }
 
 // returns a promise for the json path
 function requestPaths(destInd, destTitle, srcInd, srcTitle) {
-	var fakeData = [{
+	var fakeData = {
+		nodes: [{
 
-		title: 'Accountant',
-		industry: 'Dairy',
-		description: 'I got experience crunching numbers',
-		start: '10/20/11',
-		end: '10/25/11',
-		children: [{
+			title: 'Accountant',
+			industry: 'Dairy',
+			description: 'I got experience crunching numbers',
+			start: '10/20/11',
+			end: '10/25/11' }, {
 
 			title: 'Producer',
 			industry: 'Cinema',
@@ -55,28 +79,28 @@ function requestPaths(destInd, destTitle, srcInd, srcTitle) {
 			industry: 'Retail',
 			description: 'I serviced customers',
 			start: '8/11/12',
-			end: '8/23/12',
-			children: [{
+			end: '8/23/12' }, {
 
-				title: 'Producer',
-				industry: 'Cinema',
-				description: 'I made phone calls and made things happen',
-				start: '2/10/97',
-				end: '2/8/98' }]}]}, {
+			title: 'Tester',
+			industry: 'Video Games',
+			description: 'I got my foot in the door of the bungie',
+			start: '2/21/13',
+			end: '1/5/03' }, {
 
-		title: 'Tester',
-		industry: 'Video Games',
-		description: 'I got my foot in the door of the bungie',
-		start: '2/21/13',
-		end: '1/5/03',
-		children: [{
-
-			title: 'Producer',
-			industry: 'Cinema',
-			description: 'I made phone calls and made things happen',
+			title: 'Designer',
+			industry: 'Video Games',
+			description: 'I drew concept art',
 			start: '2/10/97',
-			end: '2/8/98' }]
-	}];
+			end: '2/8/98' }
+		],
+
+		links: [
+			{source:2, target:0},
+			{source:3, target:4},
+			{source:2, target:4},
+			{source:1, target:2},
+			{source:4, target:2}
+	]};
 
 	return new $.Deferred().resolve(fakeData).promise();
 
@@ -103,10 +127,7 @@ $('#go-button').click(function(){
 	// TODO: validate user input
 	var params = {};
 
-	requestPaths(params).then(function(children){
-		choices = [{children:children}];
-		renderNextStep(children);
-	});
+	requestPaths(params).then(render);
 	// TODO: handle network errors
 });
 
