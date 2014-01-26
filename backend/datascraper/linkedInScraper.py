@@ -156,13 +156,11 @@ def getLinkedInProfiles(input_filename, output_filename, debug=False):
             if not idUri:
                 break
 
-            jsonRec = json.dumps(scrapeLinkedInProfile("https://www.linkedin.com/in/" + idUri, idUri))
+            rec = scrapeLinkedInProfile("https://www.linkedin.com/in/" + idUri, idUri)
 
-            if jsonRec and len(jsonRec) > 0:
-                append_fp.write(jsonRec)
+            if rec and len(rec) > 0:
+                append_fp.write(json.dumps(rec))
                 append_fp.write(",\n")
-
-            #print jsonRec
 
             # delay
             sleepSecs = randint(0,1)
