@@ -158,14 +158,14 @@ def getLinkedInProfiles(input_filename, output_filename, debug=False):
 
             jsonRec = json.dumps(scrapeLinkedInProfile("https://www.linkedin.com/in/" + idUri, idUri))
 
-            if jsonRec:
+            if jsonRec and len(jsonRec) > 0:
                 append_fp.write(jsonRec)
                 append_fp.write(",\n")
 
             #print jsonRec
 
             # delay
-            sleepSecs = randint(1,2)
+            sleepSecs = randint(0,1)
             if debug == True:
                 sys.stderr.write("Delaying ... %s\n" % str(sleepSecs))
             sleep(sleepSecs)
