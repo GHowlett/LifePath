@@ -28,7 +28,8 @@ def find_between( s, first, last ):
 class linkedInSpider(BaseSpider):
 	name = "linkedin.com"
 	allowed_domains = ["linkedin.com"]
-	start_urls = ["http://www.linkedin.com/in/burtonlee"]
+	#start_urls = ["http://www.linkedin.com/in/chrisbellphoto", "http://www.linkedin.com/in/chrisbellphoto"]
+	start_urls = [line.strip() for line in open("linkedin-dataset-uris.txt", 'r')]
 	print start_urls
 
 	def parse(self, response):
