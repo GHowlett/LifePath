@@ -62,15 +62,17 @@ def getLinkedInUris(startRec=0):
 
 
 def getLinkedInUrisByLoopsOfTen(loopsOfTen=10, debug=False):
+    if debug == True:
+        sys.stderr.write("Starting; scraping LinkedIn URIs ...\n")
     for i in xrange(0, loopsOfTen):
         uris = getLinkedInUris(i*10)
         for uri in uris:
             print uri
 
         # delay
-        sleepSecs = randint(1,4)
+        sleepSecs = randint(3,9)
         if debug == True:
-            sys.stderr.write("Loop %d, Delaying ...%s\n" % (i, str(sleepSecs)))
+            sys.stderr.write("Loop %d, Delaying ... %s\n" % (i, str(sleepSecs)))
         sleep(sleepSecs)
 
 getLinkedInUrisByLoopsOfTen(100, True)
