@@ -6,6 +6,8 @@ function onChoiceMade() {
 	$(this).addClass('chosen');
 	$(this).siblings().removeClass('chosen');
 
+	// TODO: render handle childless choices
+
 	var nextSteps = $(this).parent().nextAll().remove();
 	choices.splice(choices.length - nextSteps.length);
 
@@ -19,6 +21,8 @@ function onChoiceMade() {
 // returns an unattached row of all the next choices
 function renderNextStep(children) {
 	var step = $('<div class="step">');
+
+	// TODO: render arrow pointing to target if no children
 
 	children.forEach(function(choice){
 		var $choice = $('<div class="choice">)');
